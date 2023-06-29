@@ -1,0 +1,59 @@
+using System;
+using System.Drawing;
+using System.Web.UI;
+
+namespace WallPaintingWebsite
+{
+    public partial class Default : Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                // Set initial color and size
+                Session["currentColor"] = Color.Black;
+                Session["brushSize"] = 5;
+            }
+        }
+
+        protected void btnColor_Click(object sender, EventArgs e)
+        {
+            // Get selected color from the color picker
+            Color selectedColor = ColorTranslator.FromHtml(txtColor.Text);
+
+            // Store the selected color in session
+            Session["currentColor"] = selectedColor;
+        }
+
+        protected void btnSize_Click(object sender, EventArgs e)
+        {
+            // Get selected brush size
+            int selectedSize = int.Parse(txtSize.Text);
+
+            // Store the selected size in session
+            Session["brushSize"] = selectedSize;
+        }
+
+        protected void canvas_Click(object sender, EventArgs e)
+        {
+            // Get the current color and size from session
+            Color currentColor = (Color)Session["currentColor"];
+            int brushSize = (int)Session["brushSize"];
+
+            // Get the clicked position on the canvas
+            Point clickPosition = new Point(int.Parse(hdnX.Value), int.Parse(hdnY.Value));
+
+            // Paint the clicked position with the current color and size
+            Paint(clickPosition, currentColor, brushSize);
+        }
+
+        private void Paint(Point position, Color color, int size)
+        {
+            // Perform the painting logic here, such as updating the canvas with the chosen color and size.
+            // This could involve updating the HTML elements on the page or saving the changes in a database.
+            // For brevity, we'll just update a placeholder label with the position, color, and size.
+
+            lblPaintInfo.Text = $"Painted at X: {position.X}, Y: {position.Y}, Color: {color.Name}, Size: {size}px";
+        }
+    }
+}
